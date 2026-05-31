@@ -1,0 +1,12 @@
+# Archivos de configuración de XAMPP/Windows
+.DS_Store
+Thumbs.db
+
+# Credenciales y archivos temporales
+config/conexion.php
+*.log
+nbproject/
+.vscode/
+
+# Sesiones de PHP
+tmp/
