@@ -1,12 +1,13 @@
 <?php
-// Incluimos la protección y la conexión
 include 'includes/auth.php'; 
 include 'config/conexion.php';
-// Incluimos el header que ya creamos
 include 'includes/header.php'; 
 ?>
 
 <div class="container mt-5">
+    <div class="mb-3">
+        <a href="admin_panel.php" class="btn btn-secondary btn-sm">&laquo; Volver al Panel</a>
+    </div>
     <div class="d-flex justify-content-between align-items-center">
         <h2>Inventario de Ferretería</h2>
         <span class="badge bg-primary">Usuario: <?php echo $_SESSION['usuario']; ?> (<?php echo $_SESSION['rol']; ?>)</span>
@@ -43,11 +44,10 @@ include 'includes/header.php';
                         <td>{$row['precio']}</td>
                         <td>{$row['stock']}</td>";
                 
-                // Si es admin, mostramos botones de edición/eliminación
                 if ($_SESSION['rol'] == 'admin') {
                     echo "<td>
-                            <button class='btn btn-warning btn-sm'>Editar</button>
-                            <button class='btn btn-danger btn-sm'>Eliminar</button>
+                            <a href='editar_producto.php?id={$row['id']}' class='btn btn-warning btn-sm'>Editar</a>
+                            <a href='config/eliminar_producto.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"¿Estás seguro de eliminar este producto?\")'>Eliminar</a>
                           </td>";
                 }
                 echo "</tr>";
@@ -57,7 +57,37 @@ include 'includes/header.php';
     </table>
 </div>
 
-<?php 
-// Incluimos el footer
-include 'includes/footer.php'; 
-?>
+<?php if ($_SESSION['rol'] == 'admin'): ?>
+<div class="modal fade" id="modalProducto" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="config/agregar_producto.php" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Registrar Nuevo Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre del Producto</label>
+            <input type="text" name="nombre" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Precio</label>
+            <input type="number" name="precio" class="form-control" step="0.01" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Stock</label>
+            <input type="number" name="stock" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
+
+<?php include 'includes/footer.php'; ?>

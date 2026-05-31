@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Guardamos los datos en la sesión
         $_SESSION['usuario'] = $fila['usuario'];
         $_SESSION['rol'] = $fila['rol'];
+        $_SESSION['user_id'] = $fila['id']; // <--- LÍNEA AGREGADA: Guarda el ID del usuario
         
         // Redirigir según el rol
         if ($fila['rol'] == 'admin') {
